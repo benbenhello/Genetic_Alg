@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd 
 from sklearn import cluster, datasets, metrics
 from sklearn.cluster import AgglomerativeClustering
+from scipy.cluster.hierarchy import dendrogram, linkage
+import matplotlib.pyplot as plt
 
 def kmeans(data,k,seed):
 	'''
