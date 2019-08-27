@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn import cluster, datasets, metrics
 from sklearn.cluster import AgglomerativeClustering
 import matplotlib.pyplot as plt
+from scoring import getScore
 
 def kmeans(data,k,seed):
 	'''
@@ -50,11 +51,25 @@ def hclust(data,k):
 	return clustering.labels_
 
 if __name__ == '__main__':
+
+	LABELNAME = 'Stage'
+	LABEL = pd.read_csv('./data/input/label.csv')
 	data = pd.read_csv('./data/input/data.csv')
+
 	print("..... Kmeans Clustering outcome .....\n")
 	cluster_label,score = kmeans(data,5,1)
+	ari = getScore('ARI',cluster_label,labelname=LABELNAME,label=LABEL)
+	# ami = getScore('AMI',cluster_result,labelname=LABELNAME,label=LABEL)
+	mcc = getScore('MCC',cluster_label,labelname=LABELNAME,label=LABEL)
+	gini = getScore('gini',cluster_label)
 	print(cluster_label)
-	print(score)
-	print("\n..... Agglomerative Clustering outcome .....\n")
+	print("\nARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
+	print("..... Agglomerative Clustering outcome .....\n")
 	cluster_label = hclust(data,5)
+	ari = getScore('ARI',cluster_label,labelname=LABELNAME,label=LABEL)
+	# ami = getScore('AMI',cluster_result,labelname=LABELNAME,label=LABEL)
+	mcc = getScore('MCC',cluster_label,labelname=LABELNAME,label=LABEL)
+	gini = getScore('gini',cluster_label)
 	print(cluster_label)
+	print("\nARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
+
