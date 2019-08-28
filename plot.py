@@ -60,8 +60,10 @@ def barplot(label,data,output,t):
 	plt.savefig(output)
 
 if __name__ == '__main__':
-	data = pd.read_csv('./data/input/colon_mrmr_1593.csv')
+	data_path = sys.argv[1]
+	output_path = sys.argv[2]
+	data = pd.read_csv(data_path)
 	result = pd.read_csv('./data/input/label.csv')
 	cluster_label = hclust(data,4)
 	result['class'] = cluster_label
-	barplot(result['Stage'],result,'./data/output/colon_mrmr_1593_hclust4.jpg','colon_mrmr_1593.csv')
+	barplot(result['Stage'],result,output_path,output_path[14:])

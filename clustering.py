@@ -1,5 +1,6 @@
 import numpy as np 
 import pandas as pd 
+import sys
 from sklearn import cluster, datasets, metrics
 from sklearn.cluster import AgglomerativeClustering
 import matplotlib.pyplot as plt
@@ -52,10 +53,11 @@ def hclust(data,k):
 
 if __name__ == '__main__':
 
+	data_path = sys.argv[1]
 	LABELNAME = 'Stage'
 	LABEL = pd.read_csv('./data/input/label.csv')
-	data = pd.read_csv('./data/input/data.csv')
-
+	data = pd.read_csv(data_path)
+	print("file : {}\n".format(data_path))
 	print("..... Kmeans Clustering outcome .....\n")
 	cluster_label,score = kmeans(data,5,1)
 	ari = getScore('ARI',cluster_label,labelname=LABELNAME,label=LABEL)
