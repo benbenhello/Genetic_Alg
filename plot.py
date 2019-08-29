@@ -9,8 +9,8 @@ from scoring import getScore
 from clustering import kmeans, hclust
 
 def barplot(label,data,output,t):
-	N = 4
-	labels = ['1','2','3','4']
+	N = 5
+	labels = ['1','2','3','4','5']
 	patient = data.index
 	target = np.array(label)
 	uni_target = np.unique(target)
@@ -53,7 +53,7 @@ def barplot(label,data,output,t):
 					xytext=(0, -5),textcoords="offset points",ha='center', va='bottom')
 		return height_list
 
-	p1_height = autolabel(p1,[0,0,0,0])
+	p1_height = autolabel(p1,[0,0,0,0,0])
 	p2_height = autolabel(p2,p1_height)
 	p3_height = autolabel(p3,p2_height)
 	p4_height = autolabel(p4,p3_height)
@@ -64,6 +64,8 @@ if __name__ == '__main__':
 	output_path = sys.argv[2]
 	data = pd.read_csv(data_path)
 	result = pd.read_csv('./data/input/label.csv')
-	cluster_label = hclust(data,4)
+	cluster_label = hclust(data,5)
 	result['class'] = cluster_label
-	barplot(result['Stage'],result,output_path,output_path[14:])
+	remove_protein_num = 4376-(int(len(data.columns))-1)
+	plot_title = output_path[14:-4]+'\n  remove protein numbers: ' + str(remove_protein_num)
+	barplot(result['Stage'],result,output_path,plot_title)

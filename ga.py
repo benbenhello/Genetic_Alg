@@ -217,7 +217,7 @@ def main(argv):
 		# goes to the next generation 
 		s = int((10*POPULATION_SIZE)/100) 
 		new_generation.extend(population[:s]) 
-		s = int((90*POPULATION_SIZE)/100) 
+		s = int((70*POPULATION_SIZE)/100) 
 
 		# From 50% of fittest population, Individuals 
 		# will mate to produce offspring 
@@ -228,13 +228,17 @@ def main(argv):
 			r2 = p2.apply_async(random.choice(population[:int(POPULATION_SIZE/2)]).get().mate,(random.choice(population[:int(POPULATION_SIZE/2)]).get(),))
 			new_generation.append(r2)
 
-		population = new_generation 
-
+		s = int((20*POPULATION_SIZE)/100)
+		for _ in range(s):
+			r = p2.apply_async(Individual,(''.join(Individual.create_gnome()),))
+			new_generation.append(r)
+		
+		population = new_generation
 		p2.close()
 		p2.join()
 		b = time.time()
+		 
 		print("New population create time :{}\t".format(b-a))
-		
 
 		generation += 1
 
