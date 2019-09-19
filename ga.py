@@ -48,7 +48,8 @@ class Individual(object):
 		''' 
 		create chromosome or string of genes 
 		'''
-		g = np.array(['1' for _ in range(INITIAL_FEATURE_NUM)]+['0' for _ in range(FEATURE_NUM - INITIAL_FEATURE_NUM)])
+		num = INITIAL_FEATURE_NUM + (np.random.randint(low=-500,high=500))
+		g = np.array(['1' for _ in range(num)]+['0' for _ in range(FEATURE_NUM - num)])
 		np.random.shuffle(g)
 		genome = list(g)
 		# print(genome)
@@ -217,7 +218,7 @@ def main(argv):
 		# goes to the next generation 
 		s = int((10*POPULATION_SIZE)/100) 
 		new_generation.extend(population[:s]) 
-		s = int((70*POPULATION_SIZE)/100) 
+		s = int((90*POPULATION_SIZE)/100) 
 
 		# From 50% of fittest population, Individuals 
 		# will mate to produce offspring 
@@ -228,12 +229,8 @@ def main(argv):
 			r2 = p2.apply_async(random.choice(population[:int(POPULATION_SIZE/2)]).get().mate,(random.choice(population[:int(POPULATION_SIZE/2)]).get(),))
 			new_generation.append(r2)
 
-		s = int((20*POPULATION_SIZE)/100)
-		for _ in range(s):
-			r = p2.apply_async(Individual,(''.join(Individual.create_gnome()),))
-			new_generation.append(r)
-		
 		population = new_generation
+		
 		p2.close()
 		p2.join()
 		b = time.time()
