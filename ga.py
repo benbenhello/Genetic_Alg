@@ -48,7 +48,8 @@ class Individual(object):
 		''' 
 		create chromosome or string of genes 
 		'''
-		num = INITIAL_FEATURE_NUM + (np.random.randint(low=-500,high=500))
+		# num = INITIAL_FEATURE_NUM + (np.random.randint(low=-(INITIAL_FEATURE_NUM/2),high=(INITIAL_FEATURE_NUM/2)))
+		num = INITIAL_FEATURE_NUM
 		g = np.array(['1' for _ in range(num)]+['0' for _ in range(FEATURE_NUM - num)])
 		np.random.shuffle(g)
 		genome = list(g)
@@ -92,7 +93,7 @@ class Individual(object):
 		Calculate fittness score, 
 		'''
 		
-		cluster_result, score = kmeans(transform(self.chromosome,RAW_DATA), K,1) 
+		# cluster_result, score = kmeans(transform(self.chromosome,RAW_DATA), K,1) 
 		cluster_result = hclust(transform(self.chromosome,RAW_DATA), K)
 		
 		ari = getScore('ARI',cluster_result,labelname=LABELNAME,label=LABEL)
@@ -230,7 +231,7 @@ def main(argv):
 			new_generation.append(r2)
 
 		population = new_generation
-		
+
 		p2.close()
 		p2.join()
 		b = time.time()
