@@ -67,7 +67,7 @@ if __name__ == '__main__':
 	mcc = getScore('MCC',cluster_label,labelname=LABELNAME,label=LABEL)
 	gini = getScore('gini',cluster_label)
 	print(cluster_label)
-	print("\nARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
+	print("ARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
 
 	print("..... Agglomerative Clustering outcome .....\n")
 	cluster_label = hclust(data,5)
@@ -76,13 +76,13 @@ if __name__ == '__main__':
 	mcc = getScore('MCC',cluster_label,labelname=LABELNAME,label=LABEL)
 	gini = getScore('gini',cluster_label)
 	print(cluster_label)
-	print("\nARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
+	print("ARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
 
 	print("..... Kmeans Consensus Clustering outcome .....\n")
 	cc_data = data.iloc[:,1:].values.tolist()
 	print(np.array(cc_data).shape)
 	CC = ConsensusCluster(cluster=cluster.KMeans,L=3,K=9,H=10).fit(data=np.array(cc_data))
-	print('cluster number select by ConsensusClustering : {}\n'.format(CC.bestK))
+	print('cluster number select by ConsensusClustering : {}'.format(CC.bestK))
 
 	CC_predict = CC.predict()
 	ari = getScore('ARI',CC_predict,labelname=LABELNAME,label=LABEL)
@@ -90,7 +90,7 @@ if __name__ == '__main__':
 	gini = getScore('gini',CC_predict)
 	print('predict cluster according to consensus matrix : ')
 	print(CC_predict)
-	print("\nARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
+	print("ARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
 
 	CC_predict_data = CC.predict_data(data=np.array(cc_data))
 	ari = getScore('ARI',CC_predict_data,labelname=LABELNAME,label=LABEL)
@@ -98,11 +98,11 @@ if __name__ == '__main__':
 	gini = getScore('gini',CC_predict_data)
 	print('predict cluster according to data : ')
 	print(CC_predict_data)
-	print("\nARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
+	print("ARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
 
 	print("..... Agglomerative Consensus Clustering outcome .....\n")
 	CC2 = ConsensusCluster(cluster=AgglomerativeClustering,L=3,K=9,H=10).fit(data=np.array(cc_data))
-	print('cluster number select by ConsensusClustering : {}\n'.format(CC2.bestK))
+	print('cluster number select by ConsensusClustering : {}'.format(CC2.bestK))
 
 	CC2_predict = CC2.predict()
 	ari = getScore('ARI',CC2_predict,labelname=LABELNAME,label=LABEL)
@@ -110,7 +110,7 @@ if __name__ == '__main__':
 	gini = getScore('gini',CC2_predict)
 	print('predict cluster according to consensus matrix : ')
 	print(CC2_predict)
-	print("\nARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
+	print("ARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
 
 	CC2_predict_data = CC2.predict_data(data=np.array(cc_data))
 	ari = getScore('ARI',CC2_predict_data,labelname=LABELNAME,label=LABEL)
@@ -118,7 +118,7 @@ if __name__ == '__main__':
 	gini = getScore('gini',CC2_predict_data)
 	print('predict cluster according to data : ')
 	print(CC2_predict_data)
-	print("\nARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
+	print("ARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
 	
 	
 
