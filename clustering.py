@@ -19,7 +19,9 @@ def kmeans(data,k,seed):
 		cluster_labels (list) : cluster number of each sample
 		silhouette_avg (float) : cluster silhouette score
 	'''
+
 	patient = data.index
+	print(patient)
 	patient_list = []
 
 	for i in patient:
@@ -81,9 +83,9 @@ if __name__ == '__main__':
 	print("..... Kmeans Consensus Clustering outcome .....\n")
 	cc_data = data.iloc[:,1:].values.tolist()
 	print(np.array(cc_data).shape)
-	CC = ConsensusCluster(cluster=cluster.KMeans,L=3,K=9,H=10).fit(data=np.array(cc_data))
+	CC = ConsensusCluster(cluster=cluster.KMeans,L=3,K=9,H=10,resample_proportion=0.8).fit(data=np.array(cc_data))
 	print('cluster number select by ConsensusClustering : {}'.format(CC.bestK))
-
+	print(CC.deltaK)
 	CC_predict = CC.predict()
 	ari = getScore('ARI',CC_predict,labelname=LABELNAME,label=LABEL)
 	mcc = getScore('MCC',CC_predict,labelname=LABELNAME,label=LABEL)
@@ -101,9 +103,9 @@ if __name__ == '__main__':
 	print("ARI : {}\tMCC : {}\tGini : {}\t\n".format(ari,mcc,gini))
 
 	print("..... Agglomerative Consensus Clustering outcome .....\n")
-	CC2 = ConsensusCluster(cluster=AgglomerativeClustering,L=3,K=9,H=10).fit(data=np.array(cc_data))
+	CC2 = ConsensusCluster(cluster=AgglomerativeClustering,L=3,K=9,H=10,resample_proportion=0.8).fit(data=np.array(cc_data))
 	print('cluster number select by ConsensusClustering : {}'.format(CC2.bestK))
-
+	print(CC2.deltaK)
 	CC2_predict = CC2.predict()
 	ari = getScore('ARI',CC2_predict,labelname=LABELNAME,label=LABEL)
 	mcc = getScore('MCC',CC2_predict,labelname=LABELNAME,label=LABEL)

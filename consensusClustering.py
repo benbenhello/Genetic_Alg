@@ -1,7 +1,8 @@
 import numpy as np
 from itertools import combinations
 import bisect
-
+from sklearn import cluster,metrics,datasets
+from sklearn.cluster import AgglomerativeClustering
 class ConsensusCluster:
     """
       Implementation of Consensus clustering, following the paper
@@ -23,7 +24,7 @@ class ConsensusCluster:
         * self.bestK -> number of clusters that was found to be best
       """
 
-    def __init__(self, cluster, L, K, H, resample_proportion=0.5):
+    def __init__(self, cluster, L, K, H, resample_proportion=0.5, **kwargs):
         assert 0 <= resample_proportion <= 1, "proportion has to be between 0 and 1"
         self.cluster_ = cluster
         self.resample_proportion_ = resample_proportion
@@ -34,6 +35,7 @@ class ConsensusCluster:
         self.Ak = None
         self.deltaK = None
         self.bestK = None
+        self.karg = kwargs
 
     def _internal_resample(self, data, proportion):
         """
@@ -44,7 +46,7 @@ class ConsensusCluster:
         resampled_indices = np.random.choice(
             range(data.shape[0]), size=int(data.shape[0]*proportion), replace=False)
         return resampled_indices, data[resampled_indices, :]
-
+    
     def fit(self, data, verbose=False):
         """
         Fits a consensus matrix for each number of clusters
@@ -64,7 +66,16 @@ class ConsensusCluster:
                     print("\tAt resampling h = %d, (k = %d)" % (h, k))
                 resampled_indices, resample_data = self._internal_resample(
                     data, self.resample_proportion_)
-                Mh = self.cluster_(n_clusters=k).fit_predict(resample_data)
+
+                if self.cluster_ == cluster.KMeans:
+                    Mh = self.cluster_(n_clusters=k).fit_predict(resample_data)
+                elif self.cluster_ == AgglomerativeClustering:
+                    distance = self.karg['distance'] if self.karg.get('distance') else 'euclidean'
+                    linkage = self.karg['linkage'] if self.karg.get('linkage') else 'ward'
+                    Mh = self.cluster_(n_clusters=k,affinity=distance,linkage=linkage).fit_predict(resample_data)
+                else :
+                    print('please provide available clutering mothod')
+                    break
                 # find indexes of elements from same clusters with bisection
                 # on sorted array => this is more efficient than brute force search
                 id_clusts = np.argsort(Mh)
@@ -86,6 +97,7 @@ class ConsensusCluster:
             Mk[i_, range(data.shape[0]), range(
                 data.shape[0])] = 1  # always with self
             Is.fill(0)  # reset counter
+            
         self.Mk = Mk
         # fits areas under the CDFs
         self.Ak = np.zeros(self.K_-self.L_)

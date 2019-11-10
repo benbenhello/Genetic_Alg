@@ -101,7 +101,6 @@ class Individual(object):
 		ami = 0
 		mcc = getScore('MCC',cluster_result,labelname=LABELNAME,label=LABEL)
 		gini = getScore('gini',cluster_result)
-		
 		fitness = ari
 		return fitness, ari, ami, mcc, gini
 
